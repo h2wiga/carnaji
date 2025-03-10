@@ -1,161 +1,222 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استعلام تسهیلات موسسه مالی و اعتباری رسالت</title>
-    <link href="https://fonts.googleapis.com/css2?family=Vazir&display=swap" rel="stylesheet">
+    <title>سامانه استعلام خودرو - شماره گزاری راهور ناجا سبزوار</title>
+    <link href="https://fonts.googleapis.com/css2?family=Samim&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Vazir', sans-serif;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(0, 128, 0, 0.6));
-            backdrop-filter: blur(10px);
+        * {
+            font-family: 'Samim', 'Tahoma', sans-serif;
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            color: #333;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.5); /* شفافیت 50 درصد */
+
+        body {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
+            background-color: #f5f5f5;
+            min-height: 100vh;
         }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 80px 0 15px;
+            border-bottom: 2px solid #4CAF50;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
         .logo {
-            width: 150px;
-            height: auto;
-            margin-bottom: 20px;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 80px;
+            width: 200px;
+            background-image: url('https://uploadkon.ir/uploads/f4a110_25images.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
-        h1 {
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .user-icon {
             font-size: 24px;
-            margin-bottom: 20px;
         }
-        #date-time {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
+
+        .logout-link {
+            color: #ff4444;
+            text-decoration: none;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
         }
-        input[type="text"] {
+
+        .logout-link:hover {
+            text-decoration: underline;
+        }
+
+        .datetime {
+            font-size: 0.9em;
+            color: #666;
+            margin-right: 20px;
+        }
+
+        .input-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        input {
+            padding: 12px;
             width: 100%;
-            padding: 10px;
+            max-width: 400px;
             margin: 10px 0;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
         }
+
         button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
+            padding: 12px 25px;
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
+            width: 100%;
+            max-width: 150px;
+            font-size: 16px;
             transition: background-color 0.3s;
         }
+
         button:hover {
-            background-color: #218838;
+            background-color: #45a049;
         }
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #e9ecef;
-            font-size: 16px;
-            text-align: right;
+
+        #result {
+            margin: 20px auto;
+            padding: 25px;
+            border: 1px solid #4CAF50;
+            border-radius: 10px;
+            background-color: white;
+            line-height: 2;
+            max-width: 800px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                padding-top: 100px;
+            }
+
+            .datetime {
+                text-align: center;
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .user-info {
+                margin-left: 0;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            input, button {
+                max-width: 100%;
+            }
+
+            .logo {
+                top: 20px;
+                width: 150px;
+                height: 60px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://uploadkon.ir/uploads/4a7c08_25logoMobile.png" alt="Logo" class="logo">
-        <h1>استعلام تسهیلات موسسه مالی و اعتباری رسالت</h1>
-        <div id="date-time">در حال بارگذاری تاریخ و زمان...</div>
-        <input type="text" id="nationalCode" placeholder="کد ملی را وارد کنید">
-        <button onclick="checkLoanStatus()">استعلام</button>
-        <div class="result" id="result" style="display: none;"></div>
+    <div class="header">
+        <div class="logo"></div>
+        
+        <div class="datetime" id="datetime"></div>
+
+        <div class="user-info">
+            <div>
+                <div>سعید عباسی نژاد</div>
+                <a href="#" class="logout-link">خروج</a>
+            </div>
+            <span class="user-icon">👤</span>
+        </div>
     </div>
 
+    <h1>شماره گزاری راهور ناجا سبزوار</h1>
+
+    <div class="input-section">
+        <label>شماره بارکد خودرو را جهت استعلام وارد کنید:</label><br>
+        <input type="number" id="barcode" placeholder="شماره بارکد خودرو">
+        <button onclick="checkInfo()">استعلام</button>
+    </div>
+
+    <div id="result"></div>
+
     <script>
-        // Function to convert Gregorian date to Shamsi (Persian) date
-        function gregorianToShamsi(date) {
-            const gYear = date.getFullYear();
-            const gMonth = date.getMonth() + 1;
-            const gDay = date.getDate();
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('datetime').innerHTML = 
+                now.toLocaleDateString('fa-IR', options) + ' - ' +
+                now.toLocaleTimeString('fa-IR');
+        }
 
-            const gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            if (gYear % 4 === 0 && (gYear % 100 !== 0 || gYear % 400 === 0)) {
-                gDaysInMonth[1] = 29;
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        function checkInfo() {
+            const barcode = document.getElementById('barcode').value;
+            const resultDiv = document.getElementById('result');
+
+            if (barcode === '139567674') {
+                resultDiv.innerHTML = `
+                    <h3>نتایج استعلام:</h3>
+                    خودرو: تيبا 2 سفید رنگ<br>
+                    شماره موتور: M158537913<br>
+                    مدل خودرو: 1397<br>
+                    شماره شاسی: NAS821100J1147546<br>
+                    وضعیت قضایی: فاقد شکایت قضایی<br>
+                    جمع تخلفات: 0 ریال
+                `;
+                resultDiv.style.color = "green";
+            } else {
+                resultDiv.innerHTML = "اطلاعاتی برای این شماره بارکد یافت نشد";
+                resultDiv.style.color = "red";
             }
-
-            let gy2 = gYear - 621;
-            let shYear = gy2 - 1;
-            let shMonth = 1;
-            let shDay = 1;
-
-            let dayDiff = 0;
-            for
-        if (dayDiff <= 79) {
-            shYear -= 1;
-            dayDiff += 286;
-        } else {
-            dayDiff -= 79;
         }
-
-        if (dayDiff <= 186) {
-            shMonth = Math.floor(dayDiff / 31) + 1;
-            shDay = dayDiff % 31 + 1;
-        } else {
-            shMonth = Math.floor((dayDiff - 186) / 30) + 7;
-            shDay = (dayDiff - 186) % 30 + 1;
-        }
-
-        return `${shYear}/${shMonth}/${shDay}`;
-    }
-
-    // Function to update date and time
-    function updateDateTime() {
-        const now = new Date();
-        const shamsiDate = gregorianToShamsi(now);
-        const time = now.toLocaleTimeString('fa-IR');
-        document.getElementById('date-time').textContent = `تاریخ: ${shamsiDate} - زمان: ${time}`;
-    }
-
-    // Update date and time every second
-    setInterval(updateDateTime, 1000);
-    updateDateTime(); // Initial call
-
-    // Function to check loan status
-    function checkLoanStatus() {
-        const nationalCode = document.getElementById('nationalCode').value;
-        const resultDiv = document.getElementById('result');
-        let resultText = '';
-
-        if (nationalCode === '3330227796') {
-            resultText = 'مشتری سجاد شریفی<br>' +
-                         'تعداد تسهیلات تسویه نشده: 0 مورد<br>' +
-                         'تعداد تسهیلات تسویه شده: 2 مورد<br>' +
-                         'شماره تسهیلات: 12075593*****582 و 12574****581';
-        } else if (nationalCode === '3341394109') {
-            resultText = 'مشتری عیسی شریفی<br>' +
-                         'تعداد تسهیلات تسویه نشده: 1 مورد<br>' +
-                         'تعداد اقساط پرداخت شده: 6 مورد<br>' +
-                         'جمع پرداختی: 1,720,8000 ریال<br>' +
-                         'بدهی معوق: 0 ریال';
-        } else {
-            resultText = 'مشتری با این کد ملی یافت نشد.';
-        }
-
-        resultDiv.innerHTML = resultText;
-        resultDiv.style.display = 'block';
-    }
-</script>
+    </script>
+</body>
+        </html><
