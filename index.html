@@ -1,222 +1,205 @@
 <!DOCTYPE html>
-<html dir="rtl">
+<html dir="rtl" lang="fa">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سامانه استعلام خودرو - شماره گزاری راهور ناجا سبزوار</title>
-    <link href="https://fonts.googleapis.com/css2?family=Samim&display=swap" rel="stylesheet">
+    <title>سامانه ناجی استان کرمانشاه</title>
     <style>
-        * {
-            font-family: 'Samim', 'Tahoma', sans-serif;
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        :root {
+            --primary-color: #2c3e50;
+            --background-color: #f8f9fa;
+            --loading-bg: rgba(255, 255, 255, 0.95);
+            --error-red: #dc3545;
+        }
+
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
 
         body {
-            max-width: 1200px;
-            margin: 0 auto;
+            font-family: 'Vazirmatn', sans-serif;
+            margin: 0;
             padding: 20px;
-            background-color: #f5f5f5;
             min-height: 100vh;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 80px 0 15px;
-            border-bottom: 2px solid #4CAF50;
-            margin-bottom: 30px;
+            background: var(--background-color) url('https://uploadkon.ir/uploads/1b9c04_25images.png') center/contain no-repeat;
             position: relative;
         }
 
-        .logo {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 80px;
-            width: 200px;
-            background-image: url('https://uploadkon.ir/uploads/f4a110_25images.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-left: 20px;
-        }
-
-        .user-icon {
-            font-size: 24px;
-        }
-
-        .logout-link {
-            color: #ff4444;
-            text-decoration: none;
-            font-size: 0.9em;
-            margin-top: 5px;
-            display: block;
-        }
-
-        .logout-link:hover {
-            text-decoration: underline;
-        }
-
-        .datetime {
-            font-size: 0.9em;
-            color: #666;
-            margin-right: 20px;
-        }
-
-        .input-section {
+        .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            padding: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            background: rgba(255,255,255,0.9);
+        }
+
+        .content {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
         }
 
         input {
-            padding: 12px;
             width: 100%;
-            max-width: 400px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
+            padding: 0.8rem;
+            border: 2px solid #ddd;
             border-radius: 5px;
-            font-size: 16px;
+            font-size: 1rem;
+            direction: ltr;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(44, 62, 80, 0.2);
         }
 
         button {
-            padding: 12px 25px;
-            background-color: #4CAF50;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            background: var(--primary-color);
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
-            max-width: 150px;
-            font-size: 16px;
-            transition: background-color 0.3s;
+            transition: transform 0.2s, opacity 0.2s;
         }
 
         button:hover {
-            background-color: #45a049;
+            transform: translateY(-2px);
+            opacity: 0.9;
         }
 
-        #result {
-            margin: 20px auto;
-            padding: 25px;
-            border: 1px solid #4CAF50;
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--loading-bg);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-logo {
+            width: 120px;
+            height: 120px;
+            background: url('https://uploadkon.ir/uploads/1b9c04_25images.png') center/contain no-repeat;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .legal-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
             border-radius: 10px;
-            background-color: white;
-            line-height: 2;
-            max-width: 800px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        h1 {
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            max-width: 600px;
+            z-index: 10000;
+            border: 2px solid var(--error-red);
+            color: var(--error-red);
+            line-height: 1.8;
             text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
         }
 
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                padding-top: 100px;
-            }
+        .legal-alert strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
 
-            .datetime {
-                text-align: center;
-                width: 100%;
-                margin: 10px 0;
-            }
-
-            .user-info {
-                margin-left: 0;
-                flex-direction: column;
-                text-align: center;
-            }
-
-            input, button {
-                max-width: 100%;
-            }
-
-            .logo {
-                top: 20px;
-                width: 150px;
-                height: 60px;
-            }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
     </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap">
 </head>
 <body>
     <div class="header">
-        <div class="logo"></div>
-        
-        <div class="datetime" id="datetime"></div>
+        انفورماتیک سامانه ناجی استان کرمانشاه
+    </div>
 
-        <div class="user-info">
-            <div>
-                <div>سعید عباسی نژاد</div>
-                <a href="#" class="logout-link">خروج</a>
-            </div>
-            <span class="user-icon">👤</span>
+    <div class="content">
+        <div class="input-group">
+            <label>کد ملی مالک خودرو</label>
+            <input type="number" id="nationalCode" placeholder="لطفاً کد ملی ۱۰ رقمی را وارد کنید">
         </div>
+
+        <div class="input-group">
+            <label>بارکد پشت کارت خودرو</label>
+            <input type="number" id="vehicleBarcode" placeholder="لطفاً شماره بارکد را وارد کنید">
+        </div>
+
+        <button onclick="validateAndSubmit()">تایید و استعلام اطلاعات</button>
     </div>
 
-    <h1>شماره گزاری راهور ناجا سبزوار</h1>
-
-    <div class="input-section">
-        <label>شماره بارکد خودرو را جهت استعلام وارد کنید:</label><br>
-        <input type="number" id="barcode" placeholder="شماره بارکد خودرو">
-        <button onclick="checkInfo()">استعلام</button>
+    <div class="loading-overlay" id="loading">
+        <div class="loading-logo"></div>
     </div>
 
-    <div id="result"></div>
+    <div class="legal-alert" id="legalAlert">
+        <strong>هشدار رسمی سیستم:</strong>
+        همکار گرامی، خودرو مذکور به دلیل ارائه سند مجعول به مراجع قضایی و متواری بودن مالک،<br>
+        و با توجه به احراز سوء نیت مرتکب، طبق دستور دادستان محترم شهرستان سنقر و کلیایی،<br>
+        هرگونه تغییرات مربوط به پلاک خودرو تیبا ۲ با مشخصات ثبت شده در سامانه،<br>
+        صرفاً با ارائه نامه کتبی از سوی دادستانی محترم شهرستان و رفع شکایت اولیه امکان‌پذیر می‌باشد.<br>
+        در غیر این صورت، کلیه تغییرات اعمال شده پس از ۲۴ ساعت به صورت خودکار لغو گردیده<br>
+        و در سامانه به وضعیت غیرقابل ثبت تغییر خواهد یافت.
+    </div>
 
     <script>
-        function updateDateTime() {
-            const now = new Date();
-            const options = { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            document.getElementById('datetime').innerHTML = 
-                now.toLocaleDateString('fa-IR', options) + ' - ' +
-                now.toLocaleTimeString('fa-IR');
+        function validateAndSubmit() {
+            const nationalCode = document.getElementById('nationalCode').value;
+            const vehicleBarcode = document.getElementById('vehicleBarcode').value;
+
+            if(nationalCode.length !== 10 || isNaN(nationalCode)) {
+                alert('لطفاً کد ملی معتبر وارد کنید');
+                return;
+            }
+
+            if(vehicleBarcode !== '139567674' || isNaN(vehicleBarcode)) {
+                alert('بارکد وارد شده معتبر نیست');
+                return;
+            }
+
+            showLoading();
         }
 
-        setInterval(updateDateTime, 1000);
-        updateDateTime();
+        function showLoading() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'flex';
 
-        function checkInfo() {
-            const barcode = document.getElementById('barcode').value;
-            const resultDiv = document.getElementById('result');
-
-            if (barcode === '139567674') {
-                resultDiv.innerHTML = `
-                    <h3>نتایج استعلام:</h3>
-                    خودرو: تيبا 2 سفید رنگ<br>
-                    شماره موتور: M158537913<br>
-                    مدل خودرو: 1397<br>
-                    شماره شاسی: NAS821100J1147546<br>
-                    وضعیت قضایی: فاقد شکایت قضایی<br>
-                    جمع تخلفات: 0 ریال
-                `;
-                resultDiv.style.color = "green";
-            } else {
-                resultDiv.innerHTML = "اطلاعاتی برای این شماره بارکد یافت نشد";
-                resultDiv.style.color = "red";
-            }
+            setTimeout(() => {
+                loading.style.display = 'none';
+                const legalAlert = document.getElementById('legalAlert');
+                legalAlert.style.display = 'block';
+            }, 8000);
         }
     </script>
 </body>
-        </html><
+    </html>
