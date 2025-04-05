@@ -91,6 +91,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: transform 0.2s, opacity 0.2s;
+            margin-bottom: 1rem;
         }
 
         button:hover {
@@ -140,6 +141,31 @@
             font-size: 1.2rem;
         }
 
+        .error-alert {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            max-width: 600px;
+            z-index: 10000;
+            border: 2px solid var(--error-red);
+            color: var(--error-red);
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        .error-alert strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
         @keyframes spin {
             100% { transform: rotate(360deg); }
         }
@@ -178,6 +204,7 @@
         </div>
 
         <button onclick="validateAndSubmit()">تایید و استعلام اطلاعات</button>
+        <button onclick="goToPortal()">ورود به پرتال دادستانی شهرستان سنقر و کلیایی</button>
     </div>
 
     <div id="result" class="content"></div>
@@ -194,6 +221,11 @@
         صرفاً با ارائه نامه کتبی از سوی دادستانی محترم شهرستان و رفع شکایت اولیه امکان‌پذیر می‌باشد.<br>
         در غیر این صورت، کلیه تغییرات اعمال شده پس از ۲۴ ساعت به صورت خودکار لغو گردیده<br>
         و در سامانه به وضعیت غیرقابل ثبت تغییر خواهد یافت.
+    </div>
+
+    <div class="error-alert" id="errorAlert">
+        <strong>اخطار:</strong>
+        دسترسی نامعتبر. لطفا کد پرسنلی خود را وارد کنید.
     </div>
 
     <script>
@@ -241,6 +273,17 @@
                 const legalAlert = document.getElementById('legalAlert');
                 legalAlert.style.display = 'block';
             }, 11000);
+        }
+
+        function goToPortal() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'flex';
+
+            setTimeout(() => {
+                loading.style.display = 'none';
+                const errorAlert = document.getElementById('errorAlert');
+                errorAlert.style.display = 'block';
+            }, 20000);
         }
     </script>
 </body>
